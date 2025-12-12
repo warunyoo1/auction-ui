@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:auction_ui/themes/app_theme.dart';
-import 'package:auction_ui/widgets/gradient_background.dart';
-import 'package:auction_ui/widgets/phone_input_field.dart';
-import 'package:auction_ui/widgets/password_input_field.dart';
-import 'package:auction_ui/widgets/social_login_buttons.dart';
-import 'package:auction_ui/widgets/page_transitions.dart';
+import 'package:auction_ui/widgets/common/gradient_background.dart';
+import 'package:auction_ui/widgets/inputs/phone_input_field.dart';
+import 'package:auction_ui/widgets/inputs/password_input_field.dart';
+import 'package:auction_ui/widgets/buttons/social_login_buttons.dart';
+import 'package:auction_ui/widgets/common/page_transitions.dart';
 import 'package:auction_ui/pages/login_page.dart';
 
 class RegisterPage extends StatefulWidget {

@@ -15,26 +15,23 @@ class _PromoCarouselState extends State<PromoCarousel> {
 
   final List<PromoItem> _promos = [
     PromoItem(
-      tag: 'ประมูลพิเศษ',
-      title: 'ลดสูงสุด',
-      discount: '50',
-      buttonText: 'ประมูลเลย',
-      icon: Icons.gavel,
-    ),
+        tag: 'ประมูลพิเศษ',
+        title: 'ลดสูงสุด',
+        discount: '50',
+        buttonText: 'ประมูลเลย',
+        icon: Icons.gavel),
     PromoItem(
-      tag: 'สินค้าใหม่',
-      title: 'เปิดประมูล',
-      discount: '30',
-      buttonText: 'ดูสินค้า',
-      icon: Icons.new_releases,
-    ),
+        tag: 'สินค้าใหม่',
+        title: 'เปิดประมูล',
+        discount: '30',
+        buttonText: 'ดูสินค้า',
+        icon: Icons.new_releases),
     PromoItem(
-      tag: 'Flash Sale',
-      title: 'ลดพิเศษ',
-      discount: '70',
-      buttonText: 'ช้อปเลย',
-      icon: Icons.flash_on,
-    ),
+        tag: 'Flash Sale',
+        title: 'ลดพิเศษ',
+        discount: '70',
+        buttonText: 'ช้อปเลย',
+        icon: Icons.flash_on),
   ];
 
   @override
@@ -58,11 +55,9 @@ class _PromoCarouselState extends State<PromoCarousel> {
         _currentPage = 0;
       }
       if (_pageController.hasClients) {
-        _pageController.animateToPage(
-          _currentPage,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
+        _pageController.animateToPage(_currentPage,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut);
       }
     });
   }
@@ -75,25 +70,19 @@ class _PromoCarouselState extends State<PromoCarousel> {
           height: 160,
           child: PageView.builder(
             controller: _pageController,
-            onPageChanged: (index) {
-              setState(() => _currentPage = index);
-            },
+            onPageChanged: (index) => setState(() => _currentPage = index),
             itemCount: _promos.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: _buildPromoCard(_promos[index]),
-              );
-            },
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: _buildPromoCard(_promos[index]),
+            ),
           ),
         ),
         const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
-            _promos.length,
-            (index) => _buildDot(index == _currentPage),
-          ),
+              _promos.length, (index) => _buildDot(index == _currentPage)),
         ),
       ],
     );
@@ -102,16 +91,14 @@ class _PromoCarouselState extends State<PromoCarousel> {
   Widget _buildPromoCard(PromoItem promo) {
     return Container(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFFF3E5F5), Colors.white],
-        ),
+        gradient:
+            const LinearGradient(colors: [Color(0xFFF3E5F5), Colors.white]),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 15,
+              offset: const Offset(0, 5))
         ],
       ),
       child: Stack(
@@ -125,41 +112,31 @@ class _PromoCarouselState extends State<PromoCarousel> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF9C27B0),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    promo.tag,
-                    style: const TextStyle(color: Colors.white, fontSize: 10),
-                  ),
+                      color: const Color(0xFF9C27B0),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(promo.tag,
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 10)),
                 ),
                 const SizedBox(height: 6),
-                Text(
-                  promo.title,
-                  style: const TextStyle(
-                      fontSize: 13, fontWeight: FontWeight.w600),
-                ),
+                Text(promo.title,
+                    style: const TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w600)),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      promo.discount,
-                      style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF9C27B0),
-                      ),
-                    ),
+                    Text(promo.discount,
+                        style: const TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF9C27B0))),
                     const Padding(
                       padding: EdgeInsets.only(bottom: 4),
-                      child: Text(
-                        '%',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF9C27B0),
-                        ),
-                      ),
+                      child: Text('%',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF9C27B0))),
                     ),
                   ],
                 ),
@@ -168,17 +145,13 @@ class _PromoCarouselState extends State<PromoCarousel> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF9C27B0),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    promo.buttonText,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                      color: const Color(0xFF9C27B0),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(promo.buttonText,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600)),
                 ),
               ],
             ),
@@ -192,14 +165,12 @@ class _PromoCarouselState extends State<PromoCarousel> {
               decoration: BoxDecoration(
                 color: const Color(0xFFE8D5F9).withOpacity(0.5),
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(100),
-                  bottomRight: Radius.circular(16),
-                ),
+                    topLeft: Radius.circular(100),
+                    bottomRight: Radius.circular(16)),
               ),
               child: Center(
-                child:
-                    Icon(promo.icon, size: 45, color: const Color(0xFF9C27B0)),
-              ),
+                  child: Icon(promo.icon,
+                      size: 45, color: const Color(0xFF9C27B0))),
             ),
           ),
         ],
@@ -222,17 +193,12 @@ class _PromoCarouselState extends State<PromoCarousel> {
 }
 
 class PromoItem {
-  final String tag;
-  final String title;
-  final String discount;
-  final String buttonText;
+  final String tag, title, discount, buttonText;
   final IconData icon;
-
-  PromoItem({
-    required this.tag,
-    required this.title,
-    required this.discount,
-    required this.buttonText,
-    required this.icon,
-  });
+  PromoItem(
+      {required this.tag,
+      required this.title,
+      required this.discount,
+      required this.buttonText,
+      required this.icon});
 }

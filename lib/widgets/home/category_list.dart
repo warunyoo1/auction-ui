@@ -36,11 +36,8 @@ class _CategoryListState extends State<CategoryList> {
           final isSelected = _selectedIndex == index;
 
           return GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedIndex = isSelected ? -1 : index;
-              });
-            },
+            onTap: () =>
+                setState(() => _selectedIndex = isSelected ? -1 : index),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOutCubic,
@@ -58,25 +55,26 @@ class _CategoryListState extends State<CategoryList> {
                         end: Alignment.bottomRight,
                         colors: isSelected
                             ? [const Color(0xFF9C27B0), const Color(0xFF7B1FA2)]
-                            : [category.color, category.color.withOpacity(0.6)],
+                            : [
+                                category.color,
+                                category.color.withValues(alpha: 0.6)
+                              ],
                       ),
                       borderRadius: BorderRadius.circular(isSelected ? 20 : 16),
                       boxShadow: [
                         BoxShadow(
                           color: isSelected
-                              ? const Color(0xFF9C27B0).withOpacity(0.5)
-                              : category.color.withOpacity(0.4),
+                              ? const Color(0xFF9C27B0).withValues(alpha: 0.5)
+                              : category.color.withValues(alpha: 0.4),
                           blurRadius: isSelected ? 12 : 8,
                           offset: const Offset(0, 4),
                         ),
                       ],
                     ),
-                    child: Icon(
-                      category.icon,
-                      color:
-                          isSelected ? Colors.white : const Color(0xFF7B1FA2),
-                      size: isSelected ? 28 : 24,
-                    ),
+                    child: Icon(category.icon,
+                        color:
+                            isSelected ? Colors.white : const Color(0xFF7B1FA2),
+                        size: isSelected ? 28 : 24),
                   ),
                   const SizedBox(height: 8),
                   AnimatedDefaultTextStyle(
@@ -104,6 +102,5 @@ class CategoryItem {
   final IconData icon;
   final String label;
   final Color color;
-
   CategoryItem(this.icon, this.label, this.color);
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:auction_ui/themes/app_theme.dart';
-import 'package:auction_ui/widgets/gradient_background.dart';
-import 'package:auction_ui/widgets/phone_input_field.dart';
-import 'package:auction_ui/widgets/password_input_field.dart';
-import 'package:auction_ui/widgets/social_login_buttons.dart';
-import 'package:auction_ui/widgets/page_transitions.dart';
+import 'package:auction_ui/widgets/common/gradient_background.dart';
+import 'package:auction_ui/widgets/inputs/phone_input_field.dart';
+import 'package:auction_ui/widgets/inputs/password_input_field.dart';
+import 'package:auction_ui/widgets/buttons/social_login_buttons.dart';
+import 'package:auction_ui/widgets/buttons/slide_button.dart';
+import 'package:auction_ui/widgets/common/page_transitions.dart';
 import 'package:auction_ui/pages/register_page.dart';
 import 'package:auction_ui/pages/home_page.dart';
 
@@ -27,13 +28,20 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {
+  Future<bool> _login() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
-        context,
-        FadeScalePageRoute(page: const HomePage()),
-      );
+      // Simulate API call delay
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          FadeScalePageRoute(page: const HomePage()),
+        );
+      }
+      return true;
     }
+    return false;
   }
 
   void _navigateToHome(int tabIndex) {
@@ -53,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -106,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: screenHeight * 0.18),
+                          SizedBox(height: screenHeight * 0.25),
                           Text('Login', style: AppTheme.headingLarge),
                           const SizedBox(height: 8),
                           Row(
@@ -149,32 +157,9 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                           const SizedBox(height: 40),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: ElevatedButton(
-                              onPressed: _login,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF9C27B0),
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 28, vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                elevation: 0,
-                              ),
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text('Login',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500)),
-                                  SizedBox(width: 8),
-                                  Icon(Icons.login, size: 20),
-                                ],
-                              ),
-                            ),
+                          SlideButton(
+                            text: 'Slide to Login',
+                            onSlideComplete: _login,
                           ),
                           const SizedBox(height: 32),
                           const SocialLoginButtons(),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:auction_ui/pages/notification_page.dart';
 import 'package:auction_ui/pages/login_page.dart';
-import 'package:auction_ui/widgets/page_transitions.dart';
-import 'package:auction_ui/widgets/promo_carousel.dart';
-import 'package:auction_ui/widgets/category_list.dart';
+import 'package:auction_ui/widgets/common/page_transitions.dart';
+import 'package:auction_ui/widgets/home/promo_carousel.dart';
+import 'package:auction_ui/widgets/home/category_list.dart';
 
 class HomePage extends StatefulWidget {
   final int initialIndex;
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -120,7 +120,7 @@ class _HomeContent extends StatelessWidget {
                               Text(
                                 'สถานที่',
                                 style: TextStyle(
-                                  color: Colors.white.withOpacity(0.7),
+                                  color: Colors.white.withValues(alpha: 0.7),
                                   fontSize: 12,
                                 ),
                               ),
@@ -258,7 +258,7 @@ class _HomeContent extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: Colors.white, size: 22),
@@ -304,7 +304,7 @@ class _HomeContent extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -336,7 +336,7 @@ class _HomeContent extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 4,
                       ),
                     ],
