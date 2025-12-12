@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'src/presentation/main_navigation.dart';
+import 'package:auction_ui/pages/login_page.dart';
+import 'package:auction_ui/themes/app_theme.dart';
 
 void main() {
   runApp(const AuctionApp());
@@ -13,10 +14,8 @@ class AuctionApp extends StatelessWidget {
     return MaterialApp(
       title: 'Auction UI',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MainNavigation(),
+      theme: AppTheme.lightTheme,
+      home: const LoginPage(),
     );
   }
 }
