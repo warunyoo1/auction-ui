@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:auction_ui/themes/app_theme.dart';
 import 'package:auction_ui/widgets/common/gradient_background.dart';
@@ -46,63 +47,106 @@ class _RegisterPageState extends State<RegisterPage> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 180),
-                    Text('Register', style: AppTheme.headingLarge),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 60),
+                    // Back button
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.2),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Text('Create Account', style: AppTheme.headingLarge),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Text(
                           'Already have an account? ',
                           style: TextStyle(
-                              fontSize: 14, color: Colors.grey.shade600),
+                            fontSize: 14,
+                            color: Colors.white.withOpacity(0.6),
+                          ),
                         ),
                         GestureDetector(
                           onTap: () => Navigator.pop(context),
-                          child: Text('sign in', style: AppTheme.linkText),
+                          child: Text('Sign in', style: AppTheme.linkText),
                         ),
                       ],
                     ),
                     const SizedBox(height: 40),
-                    // Name field
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: Icon(Icons.person_outline,
-                                color: Colors.grey.shade500, size: 22),
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              controller: _nameController,
-                              decoration: InputDecoration(
-                                hintText: 'Full Name',
-                                hintStyle:
-                                    TextStyle(color: Colors.grey.shade400),
-                                border: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 16),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your name';
-                                }
-                                return null;
-                              },
+                    // Name field with glass style
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.2),
                             ),
                           ),
-                        ],
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: Icon(
+                                  Icons.person_outline,
+                                  color: Colors.white.withOpacity(0.5),
+                                  size: 22,
+                                ),
+                              ),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _nameController,
+                                  style: const TextStyle(color: Colors.white),
+                                  cursorColor: AppTheme.primaryTeal,
+                                  decoration: InputDecoration(
+                                    hintText: 'Full Name',
+                                    hintStyle: TextStyle(
+                                      color: Colors.white.withOpacity(0.4),
+                                    ),
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 16,
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your name';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -137,29 +181,38 @@ class _RegisterPageState extends State<RegisterPage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 50),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton(
-                        onPressed: _register,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF9C27B0),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          elevation: 0,
+                    const SizedBox(height: 40),
+                    // Register button
+                    GestureDetector(
+                      onTap: _register,
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                          gradient: AppTheme.primaryGradient,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.primaryPurple.withOpacity(0.4),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            ),
+                          ],
                         ),
                         child: const Row(
-                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Register',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500)),
+                            Text(
+                              'Create Account',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             SizedBox(width: 8),
-                            Icon(Icons.person_add, size: 20),
+                            Icon(Icons.arrow_forward,
+                                color: Colors.white, size: 20),
                           ],
                         ),
                       ),

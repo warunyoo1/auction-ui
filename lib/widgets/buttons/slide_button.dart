@@ -1,10 +1,10 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:auction_ui/themes/app_theme.dart';
 
 class SlideButton extends StatefulWidget {
   final Future<bool> Function()? onSlideComplete;
   final String text;
-  final Color backgroundColor;
-  final Color sliderColor;
   final double height;
   final double borderRadius;
 
@@ -12,10 +12,8 @@ class SlideButton extends StatefulWidget {
     Key? key,
     this.onSlideComplete,
     this.text = 'Slide to Login',
-    this.backgroundColor = const Color(0xFFE8D5F9),
-    this.sliderColor = const Color(0xFF9C27B0),
-    this.height = 56,
-    this.borderRadius = 30,
+    this.height = 60,
+    this.borderRadius = 16,
   }) : super(key: key);
 
   @override
@@ -63,7 +61,6 @@ class _SlideButtonState extends State<SlideButton>
         _isLoading = true;
       });
 
-      // Call onSlideComplete and check result
       final success = await widget.onSlideComplete?.call() ?? false;
 
       if (success) {
@@ -72,7 +69,6 @@ class _SlideButtonState extends State<SlideButton>
           _isLoading = false;
         });
       } else {
-        // Login failed, reset slider
         setState(() => _isLoading = false);
         _resetSlider();
       }
@@ -99,101 +95,121 @@ class _SlideButtonState extends State<SlideButton>
       builder: (context, constraints) {
         _maxDrag = constraints.maxWidth - sliderSize - 8;
 
-        return Container(
-          height: widget.height,
-          decoration: BoxDecoration(
-            color: widget.backgroundColor,
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-          ),
-          child: Stack(
-            children: [
-              // Progress fill
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 50),
-                width: _dragPosition + sliderSize + 8,
-                height: widget.height,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      widget.sliderColor,
-                      widget.sliderColor.withValues(alpha: 0.7),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(widget.borderRadius),
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              height: widget.height,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withOpacity(0.1),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.2),
+                  width: 1,
                 ),
               ),
-              // Text
-              Center(
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 200),
-                  opacity: _isCompleted || _isLoading
-                      ? 0
-                      : 1 - (_dragPosition / _maxDrag) * 0.5,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        widget.text,
-                        style: TextStyle(
-                          color: _dragPosition > _maxDrag * 0.3
-                              ? Colors.white
-                              : widget.sliderColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: _dragPosition > _maxDrag * 0.3
-                            ? Colors.white
-                            : widget.sliderColor,
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // Slider thumb
-              Positioned(
-                left: _dragPosition + 4,
-                top: 4,
-                child: GestureDetector(
-                  onHorizontalDragUpdate: _onDragUpdate,
-                  onHorizontalDragEnd: _onDragEnd,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    width: sliderSize,
-                    height: sliderSize,
+              child: Stack(
+                children: [
+                  // Progress fill with gradient
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 50),
+                    width: _dragPosition + sliderSize + 8,
+                    height: widget.height,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.circular(widget.borderRadius - 4),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
-                          blurRadius: 8,
-                          offset: const Offset(2, 2),
-                        ),
-                      ],
+                      gradient: LinearGradient(
+                        colors: [
+                          AppTheme.primaryPurple,
+                          AppTheme.primaryTeal.withOpacity(0.8),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(widget.borderRadius),
                     ),
-                    child: _isLoading
-                        ? Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: CircularProgressIndicator(
-                              strokeWidth: 3,
-                              color: widget.sliderColor,
-                            ),
-                          )
-                        : Icon(
-                            _isCompleted ? Icons.check : Icons.chevron_right,
-                            color: widget.sliderColor,
-                            size: 28,
-                          ),
                   ),
-                ),
+                  // Text
+                  Center(
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: _isCompleted || _isLoading
+                          ? 0
+                          : 1 - (_dragPosition / _maxDrag) * 0.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.text,
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.9),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white.withOpacity(0.9),
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Slider thumb with glow
+                  Positioned(
+                    left: _dragPosition + 4,
+                    top: 4,
+                    child: GestureDetector(
+                      onHorizontalDragUpdate: _onDragUpdate,
+                      onHorizontalDragEnd: _onDragEnd,
+                      child: Container(
+                        width: sliderSize,
+                        height: sliderSize,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              AppTheme.primaryPurple,
+                              AppTheme.primaryTeal,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            widget.borderRadius - 4,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.primaryPurple.withOpacity(0.5),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: _isLoading
+                            ? const Padding(
+                                padding: EdgeInsets.all(12),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 3,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Icon(
+                                _isCompleted
+                                    ? Icons.check
+                                    : Icons.chevron_right,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         );
       },

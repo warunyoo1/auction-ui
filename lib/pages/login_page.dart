@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:auction_ui/themes/app_theme.dart';
 import 'package:auction_ui/widgets/common/gradient_background.dart';
@@ -30,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<bool> _login() async {
     if (_formKey.currentState!.validate()) {
-      // Simulate API call delay
       await Future.delayed(const Duration(milliseconds: 500));
 
       if (mounted) {
@@ -56,48 +56,53 @@ class _LoginPageState extends State<LoginPage> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, -2),
+      extendBody: true,
+      bottomNavigationBar: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.05),
+              border: Border(
+                top: BorderSide(
+                  color: Colors.white.withOpacity(0.1),
+                  width: 1,
+                ),
+              ),
             ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: 2,
-          onTap: (index) {
-            if (index == 0) {
-              _navigateToHome(0);
-            } else if (index == 1) {
-              _navigateToHome(1);
-            }
-          },
-          selectedItemColor: const Color(0xFF9C27B0),
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'หน้าหลัก',
+            child: BottomNavigationBar(
+              currentIndex: 2,
+              onTap: (index) {
+                if (index == 0) {
+                  _navigateToHome(0);
+                } else if (index == 1) {
+                  _navigateToHome(1);
+                }
+              },
+              selectedItemColor: AppTheme.primaryTeal,
+              unselectedItemColor: Colors.white.withOpacity(0.5),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              type: BottomNavigationBarType.fixed,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined),
+                  activeIcon: Icon(Icons.home),
+                  label: 'หน้าหลัก',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.notifications_outlined),
+                  activeIcon: Icon(Icons.notifications),
+                  label: 'แจ้งเตือน',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.login_outlined),
+                  activeIcon: Icon(Icons.login),
+                  label: 'เข้าสู่ระบบ',
+                ),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_outlined),
-              activeIcon: Icon(Icons.notifications),
-              label: 'แจ้งเตือน',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.login_outlined),
-              activeIcon: Icon(Icons.login),
-              label: 'เข้าสู่ระบบ',
-            ),
-          ],
+          ),
         ),
       ),
       body: GradientBackground(
@@ -108,21 +113,48 @@ class _LoginPageState extends State<LoginPage> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Form(
                       key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: screenHeight * 0.25),
-                          Text('Login', style: AppTheme.headingLarge),
+                          SizedBox(height: screenHeight * 0.12),
+                          // Logo/Brand
+                          Center(
+                            child: Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                gradient: AppTheme.primaryGradient,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color:
+                                        AppTheme.primaryPurple.withOpacity(0.4),
+                                    blurRadius: 20,
+                                    spreadRadius: 5,
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.gavel_rounded,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: screenHeight * 0.06),
+                          Text('Welcome Back', style: AppTheme.headingLarge),
                           const SizedBox(height: 8),
                           Row(
                             children: [
                               Text(
                                 "Don't have an account? ",
                                 style: TextStyle(
-                                    fontSize: 14, color: Colors.grey.shade600),
+                                  fontSize: 14,
+                                  color: Colors.white.withOpacity(0.6),
+                                ),
                               ),
                               GestureDetector(
                                 onTap: () => Navigator.push(
@@ -130,11 +162,11 @@ class _LoginPageState extends State<LoginPage> {
                                   SlidePageRoute(page: const RegisterPage()),
                                 ),
                                 child:
-                                    Text('sign up', style: AppTheme.linkText),
+                                    Text('Sign up', style: AppTheme.linkText),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 40),
                           PhoneInputField(
                             controller: _phoneController,
                             validator: (value) {
@@ -144,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                               return null;
                             },
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
                           PasswordInputField(
                             controller: _passwordController,
                             showForgot: true,
@@ -161,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                             text: 'Slide to Login',
                             onSlideComplete: _login,
                           ),
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 40),
                           const SocialLoginButtons(),
                           const SizedBox(height: 24),
                         ],

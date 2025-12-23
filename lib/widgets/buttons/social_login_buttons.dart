@@ -1,5 +1,7 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:auction_ui/themes/app_theme.dart';
 
 class SocialLoginButtons extends StatelessWidget {
   final VoidCallback? onGooglePressed;
@@ -15,60 +17,75 @@ class SocialLoginButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _TapSocialButton(
-          onPressed: onGooglePressed,
-          icon: Image.network(
-            'https://www.google.com/favicon.ico',
-            width: 20,
-            height: 20,
-            errorBuilder: (context, error, stackTrace) =>
-                const Icon(Icons.g_mobiledata, size: 24, color: Colors.red),
-          ),
-          label: 'Sign in with Google',
-          backgroundColor: Colors.white,
-          pressedColor: Colors.grey.shade200,
-          textColor: Colors.black87,
-          hasBorder: true,
+        // Divider with "or"
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.white.withOpacity(0.2),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'or continue with',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.5),
+                  fontSize: 12,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.white.withOpacity(0.2),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 12),
-        _TapSocialButton(
-          onPressed: onFacebookPressed,
-          icon: const FaIcon(FontAwesomeIcons.facebookF,
-              color: Colors.white, size: 20),
-          label: 'Sign in with Facebook',
-          backgroundColor: const Color(0xFF1877F2),
-          pressedColor: const Color(0xFF145DBF),
-          textColor: Colors.white,
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _GlassSocialButton(
+              onPressed: onGooglePressed,
+              icon:
+                  const Icon(Icons.g_mobiledata, color: Colors.white, size: 28),
+            ),
+            const SizedBox(width: 16),
+            _GlassSocialButton(
+              onPressed: onFacebookPressed,
+              icon: const FaIcon(FontAwesomeIcons.facebookF,
+                  color: Colors.white, size: 20),
+            ),
+            const SizedBox(width: 16),
+            _GlassSocialButton(
+              onPressed: () {},
+              icon: const FaIcon(FontAwesomeIcons.apple,
+                  color: Colors.white, size: 22),
+            ),
+          ],
         ),
       ],
     );
   }
 }
 
-class _TapSocialButton extends StatefulWidget {
+class _GlassSocialButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget icon;
-  final String label;
-  final Color backgroundColor;
-  final Color pressedColor;
-  final Color textColor;
-  final bool hasBorder;
 
-  const _TapSocialButton({
+  const _GlassSocialButton({
     required this.onPressed,
     required this.icon,
-    required this.label,
-    required this.backgroundColor,
-    required this.pressedColor,
-    required this.textColor,
-    this.hasBorder = false,
   });
 
   @override
-  State<_TapSocialButton> createState() => _TapSocialButtonState();
+  State<_GlassSocialButton> createState() => _GlassSocialButtonState();
 }
 
-class _TapSocialButtonState extends State<_TapSocialButton>
+class _GlassSocialButtonState extends State<_GlassSocialButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -81,7 +98,7 @@ class _TapSocialButtonState extends State<_TapSocialButton>
       duration: const Duration(milliseconds: 100),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.96).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
     );
   }
@@ -119,52 +136,36 @@ class _TapSocialButtonState extends State<_TapSocialButton>
         builder: (context, child) {
           return Transform.scale(
             scale: _scaleAnimation.value,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: _isPressed
-                    ? [
-                        BoxShadow(
-                          color: widget.pressedColor.withValues(alpha: 0.4),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ]
-                    : [],
-              ),
-              child: Material(
-                color:
-                    _isPressed ? widget.pressedColor : widget.backgroundColor,
-                borderRadius: BorderRadius.circular(30),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  decoration: widget.hasBorder
-                      ? BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(
-                            color: _isPressed
-                                ? Colors.grey.shade400
-                                : Colors.grey.shade300,
-                          ),
-                        )
-                      : null,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      widget.icon,
-                      const SizedBox(width: 12),
-                      Text(
-                        widget.label,
-                        style: TextStyle(
-                          color: widget.textColor,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: _isPressed
+                        ? Colors.white.withOpacity(0.2)
+                        : Colors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: _isPressed
+                          ? AppTheme.primaryTeal.withOpacity(0.5)
+                          : Colors.white.withOpacity(0.2),
+                      width: 1,
+                    ),
+                    boxShadow: _isPressed
+                        ? [
+                            BoxShadow(
+                              color: AppTheme.primaryPurple.withOpacity(0.3),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            ),
+                          ]
+                        : [],
                   ),
+                  child: Center(child: widget.icon),
                 ),
               ),
             ),
